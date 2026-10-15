@@ -10,6 +10,7 @@ The assignment instructions did not cover several scenarios. The following rules
 4. Multiple Groups: The program supports only one group per run.
 5. End of Cycle: Once all members have received a payout once, the program will prompt the admin to start a new cycle. The history array is preserved.
 6. Member IDs: Since late joining and leaving are disallowed, generating IDs using members.length + 1 is safe from duplicates.
+7. Payment Timing: If a member pays "for a past week" after the week has closed, the system records the payment against the current week instead. Since we reset `amountPaidThisWeek` on every successful close, this behavior is automatic and requires no special handling.
 
 ## Technical Decisions
 
