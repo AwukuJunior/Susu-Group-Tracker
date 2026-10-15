@@ -26,6 +26,46 @@ class Group {
 
     console.log(`Added member: ${name} with ID: ${uniqueId}`);
   }
+  recordPayment(memberName, amount) {
+    // Finding the member
+    const member = this.members.find((m) => m.name === memberName);
+    if (!member) {
+      throw new Error(`Unknown member: ${memberName}`);
+    }
+
+    // Validating the amount
+    if (amount <= 0) {
+      throw new Error("Payment amount must be greater than zero.");
+    }
+
+    //Calculating what they still owe for this week
+    const amountOwed = this.weeklyAmount - member.amountPaidThisWeek;
+
+    // Preventing overpayment
+    if (amount > amountOwed) {
+      throw new Error(
+        `${memberName} only owes ${(amountOwed / 100).toFixed(2)} GHS for Week ${this.currentWeek}. ` +
+          `You tried to pay ${(amount / 100).toFixed(2)} GHS.`,
+      );
+    }
+
+    // Step 5: Update the member's records
+    member.amountPaidThisWeek += amount;
+    member.totalPaidEver += amount;
+
+    // Step 6: Log a success message
+    const remaining = this.weeklyAmount - member.amountPaidThisWeek;
+    if (remaining === 0) {
+      console.log(
+        `✅ ${memberName} has fully paid for Week ${this.currentWeek}.`,
+      );
+    } else {
+      console.log(
+        `💰 ${memberName} paid ${(amount / 100).toFixed(2)} GHS. ` +
+          `Still owes ${(remaining / 100).toFixed(2)} GHS for Week ${this.currentWeek}.`,
+      );
+    }
+  }
 }
 
 module.exports = Group;
