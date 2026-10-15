@@ -27,3 +27,12 @@ The assignment instructions did not cover several scenarios. The following rules
 - Add a proper user interface (web or mobile).
 - Add role-based access.
 - Handle the late joiner penalty fund scenario.
+
+## On the Use of AI
+
+I used an AI assistant as a design partner throughout this project.
+All code was written by me, and all architectural decisions were
+made by me. The AI was used to ask guiding questions, review code
+for issues, and challenge my reasoning — similar to a code review
+or pair-programming session. Key decisions (integer-based money
+handling, no late joiners, defensive guard clauses) were my own.
