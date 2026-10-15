@@ -111,4 +111,11 @@ describe("Group", () => {
     // History should have one entry
     expect(group.history.length).toBe(1);
   });
+  // Test 11: Cannot close week with no members
+  test("should not close a week when there are no members", () => {
+    const emptyGroup = new Group("Empty Susu", 5000);
+    const result = emptyGroup.closeWeek();
+    expect(result.success).toBe(false);
+    expect(result.message).toContain("no members");
+  });
 });

@@ -68,6 +68,14 @@ class Group {
   }
 
   closeWeek() {
+    // Guard: cannot close a week with no members
+    if (this.members.length === 0) {
+      return {
+        success: false,
+        message: "Cannot close the week: no members in the group yet.",
+      };
+    }
+
     // Phase A: Validation - check if everyone has paid in full
     const membersWhoOwe = [];
     for (const member of this.members) {
