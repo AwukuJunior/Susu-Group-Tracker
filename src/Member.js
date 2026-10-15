@@ -5,6 +5,7 @@ class Member {
 
     this.amountPaidThisWeek = 0;
     this.totalPaidEver = 0;
+    this.totalReceived = 0;
     this.hasReceivedPayout = false;
   }
 }

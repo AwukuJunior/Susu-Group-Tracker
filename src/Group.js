@@ -49,11 +49,11 @@ class Group {
       );
     }
 
-    // Step 5: Update the member's records
+    // Updating the member's records
     member.amountPaidThisWeek += amount;
     member.totalPaidEver += amount;
 
-    // Step 6: Log a success message
+    // Logging a success message
     const remaining = this.weeklyAmount - member.amountPaidThisWeek;
     if (remaining === 0) {
       console.log(
@@ -65,6 +65,64 @@ class Group {
           `Still owes ${(remaining / 100).toFixed(2)} GHS for Week ${this.currentWeek}.`,
       );
     }
+  }
+
+  closeWeek() {
+    // Phase A: Validation - check if everyone has paid in full
+    const membersWhoOwe = [];
+    for (const member of this.members) {
+      const amountOwed = this.weeklyAmount - member.amountPaidThisWeek;
+      if (amountOwed > 0) {
+        membersWhoOwe.push({ name: member.name, owes: amountOwed });
+      }
+    }
+
+    if (membersWhoOwe.length > 0) {
+      let message = `Cannot close Week ${this.currentWeek}. The following members still owe:\n`;
+      for (const entry of membersWhoOwe) {
+        message += `  - ${entry.name} owes ${(entry.owes / 100).toFixed(2)} GHS\n`;
+      }
+      return { success: false, message: message.trim() };
+    }
+
+    // Phase B: Edge Case - has the cycle completed?
+    if (this.currentWeek - 1 >= this.members.length) {
+      return {
+        success: false,
+        message: "Cycle complete. All members have received their payout.",
+      };
+    }
+
+    // Phase C: Determine the recipient
+    const recipientIndex = this.currentWeek - 1;
+    const recipient = this.members[recipientIndex];
+    const totalPot = this.weeklyAmount * this.members.length;
+
+    // Phase D: Execute the payout
+    recipient.hasReceivedPayout = true;
+    recipient.totalReceived += totalPot;
+
+    this.history.push({
+      weekNumber: this.currentWeek,
+      recipientId: recipient.id,
+      recipientName: recipient.name,
+      totalPotAmount: totalPot,
+      date: new Date().toISOString(),
+    });
+
+    // Reset everyone's weekly payment for the new week
+    for (const member of this.members) {
+      member.amountPaidThisWeek = 0;
+    }
+
+    this.currentWeek += 1;
+
+    return {
+      success: true,
+      message: `Week ${this.currentWeek - 1} closed. ${recipient.name} received ${(totalPot / 100).toFixed(2)} GHS. Week ${this.currentWeek} begins.`,
+      recipient: recipient.name,
+      amount: totalPot,
+    };
   }
 }
 
