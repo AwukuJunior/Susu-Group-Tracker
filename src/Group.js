@@ -124,6 +124,50 @@ class Group {
       amount: totalPot,
     };
   }
+  getReport() {
+    let report = "";
+
+    // Section 1: Group Summary
+    report += `----------------------------------------\n`;
+    report += `  SUSU GROUP: ${this.name}\n`;
+    report += `----------------------------------------\n`;
+    report += `Weekly Amount: ${(this.weeklyAmount / 100).toFixed(2)} GHS\n`;
+    report += `Current Week: ${this.currentWeek}\n`;
+    report += `Total Members: ${this.members.length}\n`;
+    report += `\n`;
+
+    // Section 2: This Week's Payment Status
+    report += `--- Week ${this.currentWeek} Payment Status ---\n`;
+    if (this.members.length === 0) {
+      report += `No members in the group yet.\n`;
+    } else {
+      for (const member of this.members) {
+        const remaining = this.weeklyAmount - member.amountPaidThisWeek;
+        const paidSoFar = (member.amountPaidThisWeek / 100).toFixed(2);
+        if (remaining === 0) {
+          report += `  ${member.name}: Paid in full ✅ (${paidSoFar} GHS)\n`;
+        } else {
+          report += `  ${member.name}: Paid ${paidSoFar} GHS, still owes ${(remaining / 100).toFixed(2)} GHS\n`;
+        }
+      }
+    }
+    report += `\n`;
+
+    // Section 3: Payout History
+    report += `--- Payout History ---\n`;
+    if (this.history.length === 0) {
+      report += `No payouts yet.\n`;
+    } else {
+      for (const entry of this.history) {
+        const amount = (entry.totalPotAmount / 100).toFixed(2);
+        const date = new Date(entry.date).toLocaleDateString();
+        report += `  Week ${entry.weekNumber}: ${entry.recipientName} received ${amount} GHS on ${date}\n`;
+      }
+    }
+    report += `----------------------------------------\n`;
+
+    return report;
+  }
 }
 
 module.exports = Group;
