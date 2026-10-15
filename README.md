@@ -37,4 +37,4 @@ npm test
 
 ## Status
 
-Work in progress. Core classes are being built.
+Status ✅ Complete. All 11 automated tests passing.
