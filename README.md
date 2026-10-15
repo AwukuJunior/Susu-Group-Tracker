@@ -31,8 +31,8 @@ npm test
 
 - src/Member.js — Represents a single member in the Susu.
 - src/Group.js — The main logic that manages the group, payments, and payouts.
-- index.js — The CLI entry point (in progress).
-- tests/ — Automated tests (in progress).
+- index.js — The CLI entry point.
+- tests/ — Automated tests.
 - NOTES.md — Design assumptions and decisions.
 
 ## Status
